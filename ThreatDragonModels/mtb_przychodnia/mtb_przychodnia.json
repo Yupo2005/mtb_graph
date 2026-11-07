@@ -20,19 +20,49 @@
         "version": "2.6.2",
         "cells": [
           {
-            "position": {
-              "x": 80,
-              "y": 140
+            "position": { "x": 260, "y": 40 },
+            "size": { "width": 640, "height": 260 },
+            "attrs": {
+              "body": {
+                "stroke": "#cc0000",
+                "strokeWidth": 2,
+                "strokeDasharray": "5 5",
+                "fill": "none"
+              },
+              "label": {
+                "text": "Strefa Serwerowa Przychodni (Granica Zaufania)",
+                "fill": "#cc0000",
+                "fontSize": 12,
+                "refY": 15
+              }
             },
-            "size": {
-              "width": 120,
-              "height": 60
-            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "boundary-box-servers",
+            "zIndex": -1,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "Strefa Serwerowa",
+              "description": "Oddzielenie stacji personelu od serwerów",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            }
+          },
+          {
+            "position": { "x": 40, "y": 140 },
+            "size": { "width": 140, "height": 60 },
             "attrs": {
               "body": {
                 "stroke": "#333333",
                 "strokeWidth": 1.5,
                 "strokeDasharray": null
+              },
+              "label": {
+                "text": "Personel\n192.168.0.20",
+                "fill": "#333333",
+                "fontSize": 11
               }
             },
             "visible": true,
@@ -66,19 +96,18 @@
             }
           },
           {
-            "position": {
-              "x": 360,
-              "y": 140
-            },
-            "size": {
-              "width": 120,
-              "height": 60
-            },
+            "position": { "x": 380, "y": 140 },
+            "size": { "width": 140, "height": 60 },
             "attrs": {
               "body": {
                 "stroke": "#333333",
                 "strokeWidth": 1.5,
                 "strokeDasharray": null
+              },
+              "label": {
+                "text": "Aplikacja Medyczna\n192.168.0.30",
+                "fill": "#333333",
+                "fontSize": 11
               }
             },
             "visible": true,
@@ -143,14 +172,8 @@
             }
           },
           {
-            "position": {
-              "x": 640,
-              "y": 140
-            },
-            "size": {
-              "width": 120,
-              "height": 60
-            },
+            "position": { "x": 720, "y": 140 },
+            "size": { "width": 140, "height": 60 },
             "attrs": {
               "topLine": {
                 "strokeWidth": 1.5,
@@ -159,6 +182,11 @@
               "bottomLine": {
                 "strokeWidth": 1.5,
                 "strokeDasharray": null
+              },
+              "label": {
+                "text": "Baza Danych SQL\n192.168.0.40",
+                "fill": "#333333",
+                "fontSize": 11
               }
             },
             "visible": true,
@@ -314,62 +342,6 @@
             "target": {
               "cell": "2a383961-2b57-4882-a08c-d599eb7ee84b",
               "port": "str-p-left"
-            }
-          },
-          {
-            "shape": "trust-boundary-curve",
-            "width": 20,
-            "height": 260,
-            "zIndex": -1,
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Boundary",
-              "name": "Granica Zaufania 1",
-              "description": "Oddzielenie stacji personelu od serwera aplikacji",
-              "isTrustBoundary": true,
-              "hasOpenThreats": false,
-              "crossingFlows": [],
-              "containedElements": []
-            },
-            "labels": [
-              "Granica Zaufania 1"
-            ],
-            "id": "39d0aedf-6530-46ca-8d30-034c5a6aa8cd",
-            "source": {
-              "x": 260,
-              "y": 40
-            },
-            "target": {
-              "x": 260,
-              "y": 300
-            }
-          },
-          {
-            "shape": "trust-boundary-curve",
-            "width": 20,
-            "height": 260,
-            "zIndex": -1,
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Boundary",
-              "name": "Granica Zaufania 2",
-              "description": "Oddzielenie warstwy aplikacji od bazy danych SQL",
-              "isTrustBoundary": true,
-              "hasOpenThreats": false,
-              "crossingFlows": [],
-              "containedElements": []
-            },
-            "labels": [
-              "Granica Zaufania 2"
-            ],
-            "id": "boundary-curve-db",
-            "source": {
-              "x": 540,
-              "y": 40
-            },
-            "target": {
-              "x": 540,
-              "y": 300
             }
           }
         ]
