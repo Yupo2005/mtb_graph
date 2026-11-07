@@ -5,7 +5,7 @@
   "summary": {
     "title": "mtb_przychodnia",
     "owner": "Hubert Hildebrandt",
-    "description": "",
+    "description": "Model zagrożeń STRIDE dla infrastruktury laboratoryjnej przychodni leczniczej",
     "id": 0
   },
   "detail": {
@@ -15,125 +15,202 @@
         "id": 1,
         "title": "DFD",
         "diagramType": "STRIDE",
-        "placeholder": "New STRIDE diagram description",
+        "placeholder": "Diagram przepływu danych dla przychodni",
         "thumbnail": "./public/content/images/thumbnail.stride.jpg",
         "version": "2.6.2",
         "cells": [
           {
-            "position": {
-              "x": 280,
-              "y": -340
-            },
-            "size": {
-              "width": 60,
-              "height": 60
-            },
+            "position": { "x": 100, "y": 200 },
+            "size": { "width": 120, "height": 60 },
             "attrs": {
-              "body": {
-                "stroke": "#333333",
-                "strokeWidth": 1.5,
-                "strokeDasharray": null
-              }
+              "body": { "stroke": "#333333", "strokeWidth": 1.5 },
+              "label": { "text": "Stacja Personelu\n192.168.0.20" }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "actor-personel-020",
+            "zIndex": 1,
+            "data": {
+              "type": "tm.Actor",
+              "name": "Stacja Personelu (192.168.0.20)",
+              "description": "Stacja robocza personelu medycznego i rejestracji",
+              "outOfScope": true,
+              "reasonOutOfScope": "Wyłączona z bezpośrednich ataków na OS; host referencyjny",
+              "hasOpenThreats": false,
+              "threats": []
+            }
+          },
+          {
+            "position": { "x": 380, "y": 200 },
+            "size": { "width": 120, "height": 60 },
+            "attrs": {
+              "body": { "stroke": "#333333", "strokeWidth": 1.5 },
+              "label": { "text": "Aplikacja Medyczna\n192.168.0.30" }
             },
             "visible": true,
             "shape": "process",
-            "ports": {
-              "groups": {
-                "top": {
-                  "position": "top",
-                  "attrs": {
-                    "circle": {
-                      "r": 4,
-                      "magnet": true,
-                      "stroke": "#5F95FF",
-                      "strokeWidth": 1,
-                      "fill": "#fff",
-                      "style": {
-                        "visibility": "hidden"
-                      }
-                    }
-                  }
-                },
-                "right": {
-                  "position": "right",
-                  "attrs": {
-                    "circle": {
-                      "r": 4,
-                      "magnet": true,
-                      "stroke": "#5F95FF",
-                      "strokeWidth": 1,
-                      "fill": "#fff",
-                      "style": {
-                        "visibility": "hidden"
-                      }
-                    }
-                  }
-                },
-                "bottom": {
-                  "position": "bottom",
-                  "attrs": {
-                    "circle": {
-                      "r": 4,
-                      "magnet": true,
-                      "stroke": "#5F95FF",
-                      "strokeWidth": 1,
-                      "fill": "#fff",
-                      "style": {
-                        "visibility": "hidden"
-                      }
-                    }
-                  }
-                },
-                "left": {
-                  "position": "left",
-                  "attrs": {
-                    "circle": {
-                      "r": 4,
-                      "magnet": true,
-                      "stroke": "#5F95FF",
-                      "strokeWidth": 1,
-                      "fill": "#fff",
-                      "style": {
-                        "visibility": "hidden"
-                      }
-                    }
-                  }
-                }
-              },
-              "items": [
-                {
-                  "group": "top",
-                  "id": "36ecfc22-55bd-4876-8a71-253449f3d77b"
-                },
-                {
-                  "group": "right",
-                  "id": "b21d2a2a-2760-4605-99e0-16183ae5985c"
-                },
-                {
-                  "group": "bottom",
-                  "id": "d3395847-e3b9-49c6-aaa5-90d09c28a3b0"
-                },
-                {
-                  "group": "left",
-                  "id": "37ba3b1c-7bca-428a-baa1-102538de019c"
-                }
-              ]
-            },
             "id": "8163350a-9b88-4d58-9296-3f44089174cf",
-            "zIndex": 1,
+            "zIndex": 2,
             "data": {
               "type": "tm.Process",
-              "name": "Process",
-              "description": "",
+              "name": "Aplikacja Medyczna (192.168.0.30)",
+              "description": "Moduł Gabinet / CeR / EDM",
               "outOfScope": false,
-              "isTrustBoundary": false,
-              "reasonOutOfScope": "",
+              "isWebApplication": true,
+              "privilegeLevel": "Medium",
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "id": "threat-s-1",
+                  "title": "Podszycie pod konto personelu (Spoofing)",
+                  "type": "Spoofing",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Przejęcie ciasteczka sesyjnego lub atak brute-force na moduł uwierzytelniania aplikacji gabinetowej.",
+                  "mitigation": "Wymuszenie MFA, polityka blokowania kont po błędnych próbach, flagi HttpOnly, Secure, SameSite=Strict."
+                },
+                {
+                  "id": "threat-d-1",
+                  "title": "Wyczerpanie zasobów aplikacji (Denial of Service)",
+                  "type": "Denial of service",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "description": "Wywołanie kosztownych operacji (np. nielimitowany eksport kartotek pacjentów do PDF) powodujące brak odpowiedzi serwera.",
+                  "mitigation": "Wdrożenie mechanizmu rate limiting, timeouty procesów backendowych, asynchroniczne kolejkowanie generowania raportów."
+                },
+                {
+                  "id": "threat-e-1",
+                  "title": "Eskalacja uprawnień (Elevation of Privilege)",
+                  "type": "Elevation of privilege",
+                  "status": "Open",
+                  "severity": "Critical",
+                  "description": "Błędy kontroli dostępu (BOLA / IDOR) umożliwiające roli rejestratorki edycję rozpoznań medycznych lub podgląd zastrzeżonych kartotek.",
+                  "mitigation": "Ścisła weryfikacja uprawnień RBAC na poziomie obiektów po stronie backendu."
+                }
+              ]
+            }
+          },
+          {
+            "position": { "x": 660, "y": 200 },
+            "size": { "width": 120, "height": 60 },
+            "attrs": {
+              "body": { "stroke": "#333333", "strokeWidth": 1.5 },
+              "label": { "text": "Baza Danych SQL\n192.168.0.40" }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "store-sql-040",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "Baza Danych SQL (192.168.0.40)",
+              "description": "Relacyjna baza danych przechowująca kartoteki pacjentów, EDM i logi",
+              "outOfScope": false,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "id": "threat-i-1",
+                  "title": "Ujawnienie danych medycznych (Information Disclosure)",
+                  "type": "Information disclosure",
+                  "status": "Open",
+                  "severity": "Critical",
+                  "description": "Wyciek numerów PESEL i historii chorób pacjentów w wyniku podatności SQL Injection w wyszukiwarkach aplikacji.",
+                  "mitigation": "Stosowanie wyłącznie zapytań sparametryzowanych (Prepared Statements) oraz zasada najmniejszych uprawnień konta DB."
+                },
+                {
+                  "id": "threat-r-1",
+                  "title": "Wyparcie się modyfikacji wpisów (Repudiation)",
+                  "type": "Repudiation",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "description": "Usunięcie lub zafałszowanie historii leczenia bez możliwości przypisania akcji do tożsamości użytkownika.",
+                  "mitigation": "Scentralizowany, niemodyfikowalny rejestr audytowy (append-only audit log) logujący ID, datę, IP i typ operacji."
+                }
+              ]
+            }
+          },
+          {
+            "shape": "edge",
+            "id": "flow-actor-process",
+            "source": { "cell": "actor-personel-020" },
+            "target": { "cell": "8163350a-9b88-4d58-9296-3f44089174cf" },
+            "attrs": {
+              "line": { "stroke": "#333333", "strokeWidth": 1.5, "targetMarker": { "name": "classic", "size": 6 } },
+              "label": { "text": "HTTPS / JSON" }
+            },
+            "visible": true,
+            "zIndex": 4,
+            "data": {
+              "type": "tm.Flow",
+              "name": "HTTPS / JSON",
+              "description": "Interakcja personelu z aplikacją webową",
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "id": "threat-t-1",
+                  "title": "Manipulacja parametrami zlecenia (Tampering)",
+                  "type": "Tampering",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Modyfikacja parametrów zlecenia/wizyty w locie (zmiana ID lekarza, daty lub danych pacjenta w żądaniu POST).",
+                  "mitigation": "Walidacja integralności i zgodności kontekstowej tokena z zawartością żądania po stronie serwera."
+                }
+              ]
+            }
+          },
+          {
+            "shape": "edge",
+            "id": "flow-process-store",
+            "source": { "cell": "8163350a-9b88-4d58-9296-3f44089174cf" },
+            "target": { "cell": "store-sql-040" },
+            "attrs": {
+              "line": { "stroke": "#333333", "strokeWidth": 1.5, "targetMarker": { "name": "classic", "size": 6 } },
+              "label": { "text": "SQL (Port 3306)" }
+            },
+            "visible": true,
+            "zIndex": 5,
+            "data": {
+              "type": "tm.Flow",
+              "name": "SQL (Port 3306)",
+              "description": "Zapis i odczyt EDM oraz kartotek pacjentów",
               "hasOpenThreats": false,
-              "handlesCardPayment": false,
-              "handlesGoodsOrServices": false,
-              "isWebApplication": false,
-              "privilegeLevel": "",
               "threats": []
+            }
+          },
+          {
+            "position": { "x": 260, "y": 140 },
+            "size": { "width": 20, "height": 180 },
+            "attrs": {
+              "line": { "stroke": "#FF0000", "strokeWidth": 2, "strokeDasharray": "5 5" },
+              "label": { "text": "Granica Zaufania 1\n(Personel / Aplikacja)" }
+            },
+            "visible": true,
+            "shape": "trust-boundary",
+            "id": "boundary-user-app",
+            "zIndex": 6,
+            "data": {
+              "type": "tm.Boundary",
+              "name": "Granica Zaufania 1",
+              "description": "Oddzielenie stacji klienckich personelu od serwera aplikacji",
+              "isTrustBoundary": true
+            }
+          },
+          {
+            "position": { "x": 540, "y": 140 },
+            "size": { "width": 20, "height": 180 },
+            "attrs": {
+              "line": { "stroke": "#FF0000", "strokeWidth": 2, "strokeDasharray": "5 5" },
+              "label": { "text": "Granica Zaufania 2\n(Aplikacja / Baza)" }
+            },
+            "visible": true,
+            "shape": "trust-boundary",
+            "id": "boundary-app-db",
+            "zIndex": 7,
+            "data": {
+              "type": "tm.Boundary",
+              "name": "Granica Zaufania 2",
+              "description": "Oddzielenie warstwy aplikacji webowej od dedykowanego serwera bazy danych SQL",
+              "isTrustBoundary": true
             }
           }
         ]
@@ -141,6 +218,6 @@
     ],
     "diagramTop": 2,
     "reviewer": "",
-    "threatTop": 0
+    "threatTop": 6
   }
 }
