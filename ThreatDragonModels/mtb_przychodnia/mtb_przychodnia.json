@@ -20,16 +20,16 @@
         "version": "2.6.2",
         "cells": [
           {
-            "position": { "x": 100, "y": 200 },
+            "shape": "actor",
+            "position": { "x": 100, "y": 140 },
             "size": { "width": 120, "height": 60 },
             "attrs": {
-              "body": { "stroke": "#333333", "strokeWidth": 1.5 },
-              "label": { "text": "Stacja Personelu\n192.168.0.20" }
+              "body": { "stroke": "#333333", "strokeWidth": 1.5, "fill": "#ffffff" },
+              "label": { "text": "Stacja Personelu\n192.168.0.20", "fill": "#333333", "fontSize": 12 }
             },
             "visible": true,
-            "shape": "actor",
-            "id": "actor-personel-020",
-            "zIndex": 1,
+            "id": "actor-020",
+            "zIndex": 2,
             "data": {
               "type": "tm.Actor",
               "name": "Stacja Personelu (192.168.0.20)",
@@ -41,16 +41,16 @@
             }
           },
           {
-            "position": { "x": 380, "y": 200 },
-            "size": { "width": 120, "height": 60 },
+            "shape": "process",
+            "position": { "x": 380, "y": 140 },
+            "size": { "width": 130, "height": 60 },
             "attrs": {
-              "body": { "stroke": "#333333", "strokeWidth": 1.5 },
-              "label": { "text": "Aplikacja Medyczna\n192.168.0.30" }
+              "body": { "stroke": "#333333", "strokeWidth": 1.5, "fill": "#ffffff" },
+              "label": { "text": "Aplikacja Medyczna\n192.168.0.30", "fill": "#333333", "fontSize": 12 }
             },
             "visible": true,
-            "shape": "process",
             "id": "8163350a-9b88-4d58-9296-3f44089174cf",
-            "zIndex": 2,
+            "zIndex": 3,
             "data": {
               "type": "tm.Process",
               "name": "Aplikacja Medyczna (192.168.0.30)",
@@ -66,7 +66,7 @@
                   "type": "Spoofing",
                   "status": "Open",
                   "severity": "High",
-                  "description": "Przejęcie ciasteczka sesyjnego lub atak brute-force na moduł uwierzytelniania aplikacji gabinetowej.",
+                  "description": "Przejęcie ciasteczka sesyjnego lub atak credential stuffing na moduł logowania aplikacji gabinetowej.",
                   "mitigation": "Wymuszenie MFA, polityka blokowania kont po błędnych próbach, flagi HttpOnly, Secure, SameSite=Strict."
                 },
                 {
@@ -75,8 +75,8 @@
                   "type": "Denial of service",
                   "status": "Open",
                   "severity": "Medium",
-                  "description": "Wywołanie kosztownych operacji (np. nielimitowany eksport kartotek pacjentów do PDF) powodujące brak odpowiedzi serwera.",
-                  "mitigation": "Wdrożenie mechanizmu rate limiting, timeouty procesów backendowych, asynchroniczne kolejkowanie generowania raportów."
+                  "description": "Wywołanie kosztownych operacji generowania raportów bez stronicowania powodujące zawieszenie procesu serwera.",
+                  "mitigation": "Wdrożenie rate limitingu, timeouty zapytań backendowych, asynchroniczne kolejkowanie zadań."
                 },
                 {
                   "id": "threat-e-1",
@@ -84,23 +84,23 @@
                   "type": "Elevation of privilege",
                   "status": "Open",
                   "severity": "Critical",
-                  "description": "Błędy kontroli dostępu (BOLA / IDOR) umożliwiające roli rejestratorki edycję rozpoznań medycznych lub podgląd zastrzeżonych kartotek.",
+                  "description": "Błędy kontroli dostępu (BOLA / IDOR) umożliwiające roli rejestratorki edycję rozpoznań medycznych lekarza.",
                   "mitigation": "Ścisła weryfikacja uprawnień RBAC na poziomie obiektów po stronie backendu."
                 }
               ]
             }
           },
           {
-            "position": { "x": 660, "y": 200 },
+            "shape": "store",
+            "position": { "x": 660, "y": 140 },
             "size": { "width": 120, "height": 60 },
             "attrs": {
-              "body": { "stroke": "#333333", "strokeWidth": 1.5 },
-              "label": { "text": "Baza Danych SQL\n192.168.0.40" }
+              "body": { "stroke": "#333333", "strokeWidth": 1.5, "fill": "#ffffff" },
+              "label": { "text": "Baza Danych SQL\n192.168.0.40", "fill": "#333333", "fontSize": 12 }
             },
             "visible": true,
-            "shape": "store",
-            "id": "store-sql-040",
-            "zIndex": 3,
+            "id": "store-040",
+            "zIndex": 4,
             "data": {
               "type": "tm.Store",
               "name": "Baza Danych SQL (192.168.0.40)",
@@ -115,7 +115,7 @@
                   "status": "Open",
                   "severity": "Critical",
                   "description": "Wyciek numerów PESEL i historii chorób pacjentów w wyniku podatności SQL Injection w wyszukiwarkach aplikacji.",
-                  "mitigation": "Stosowanie wyłącznie zapytań sparametryzowanych (Prepared Statements) oraz zasada najmniejszych uprawnień konta DB."
+                  "mitigation": "Stosowanie wyłącznie zapytań sparametryzowanych (Prepared Statements) oraz zasada najmniejszych uprawnień konta bazy."
                 },
                 {
                   "id": "threat-r-1",
@@ -130,16 +130,16 @@
             }
           },
           {
-            "shape": "edge",
+            "shape": "flow",
             "id": "flow-actor-process",
-            "source": { "cell": "actor-personel-020" },
-            "target": { "cell": "8163350a-9b88-4d58-9296-3f44089174cf" },
+            "source": { "id": "actor-020" },
+            "target": { "id": "8163350a-9b88-4d58-9296-3f44089174cf" },
             "attrs": {
-              "line": { "stroke": "#333333", "strokeWidth": 1.5, "targetMarker": { "name": "classic", "size": 6 } },
-              "label": { "text": "HTTPS / JSON" }
+              "line": { "stroke": "#333333", "strokeWidth": 1.5, "targetMarker": { "name": "block", "size": 6 } },
+              "label": { "text": "HTTPS / JSON", "fill": "#333333", "fontSize": 10 }
             },
             "visible": true,
-            "zIndex": 4,
+            "zIndex": 5,
             "data": {
               "type": "tm.Flow",
               "name": "HTTPS / JSON",
@@ -152,23 +152,23 @@
                   "type": "Tampering",
                   "status": "Open",
                   "severity": "High",
-                  "description": "Modyfikacja parametrów zlecenia/wizyty w locie (zmiana ID lekarza, daty lub danych pacjenta w żądaniu POST).",
-                  "mitigation": "Walidacja integralności i zgodności kontekstowej tokena z zawartością żądania po stronie serwera."
+                  "description": "Modyfikacja parametrów zlecenia/recepty w locie w żądaniu POST.",
+                  "mitigation": "Walidacja integralności i powiązania kontekstowego tokena z żądaniem po stronie serwera."
                 }
               ]
             }
           },
           {
-            "shape": "edge",
+            "shape": "flow",
             "id": "flow-process-store",
-            "source": { "cell": "8163350a-9b88-4d58-9296-3f44089174cf" },
-            "target": { "cell": "store-sql-040" },
+            "source": { "id": "8163350a-9b88-4d58-9296-3f44089174cf" },
+            "target": { "id": "store-040" },
             "attrs": {
-              "line": { "stroke": "#333333", "strokeWidth": 1.5, "targetMarker": { "name": "classic", "size": 6 } },
-              "label": { "text": "SQL (Port 3306)" }
+              "line": { "stroke": "#333333", "strokeWidth": 1.5, "targetMarker": { "name": "block", "size": 6 } },
+              "label": { "text": "SQL (Port 3306)", "fill": "#333333", "fontSize": 10 }
             },
             "visible": true,
-            "zIndex": 5,
+            "zIndex": 6,
             "data": {
               "type": "tm.Flow",
               "name": "SQL (Port 3306)",
@@ -178,38 +178,38 @@
             }
           },
           {
-            "position": { "x": 260, "y": 140 },
-            "size": { "width": 20, "height": 180 },
+            "shape": "trust-boundary",
+            "source": { "x": 280, "y": 60 },
+            "target": { "x": 280, "y": 280 },
             "attrs": {
-              "line": { "stroke": "#FF0000", "strokeWidth": 2, "strokeDasharray": "5 5" },
-              "label": { "text": "Granica Zaufania 1\n(Personel / Aplikacja)" }
+              "line": { "stroke": "#cc0000", "strokeWidth": 2, "strokeDasharray": "5 5" },
+              "label": { "text": "Granica Zaufania 1\n(Personel / Aplikacja)", "fill": "#cc0000", "fontSize": 10 }
             },
             "visible": true,
-            "shape": "trust-boundary",
             "id": "boundary-user-app",
-            "zIndex": 6,
+            "zIndex": 7,
             "data": {
               "type": "tm.Boundary",
               "name": "Granica Zaufania 1",
-              "description": "Oddzielenie stacji klienckich personelu od serwera aplikacji",
+              "description": "Oddzielenie stacji personelu od serwera aplikacji",
               "isTrustBoundary": true
             }
           },
           {
-            "position": { "x": 540, "y": 140 },
-            "size": { "width": 20, "height": 180 },
+            "shape": "trust-boundary",
+            "source": { "x": 580, "y": 60 },
+            "target": { "x": 580, "y": 280 },
             "attrs": {
-              "line": { "stroke": "#FF0000", "strokeWidth": 2, "strokeDasharray": "5 5" },
-              "label": { "text": "Granica Zaufania 2\n(Aplikacja / Baza)" }
+              "line": { "stroke": "#cc0000", "strokeWidth": 2, "strokeDasharray": "5 5" },
+              "label": { "text": "Granica Zaufania 2\n(Aplikacja / Baza)", "fill": "#cc0000", "fontSize": 10 }
             },
             "visible": true,
-            "shape": "trust-boundary",
             "id": "boundary-app-db",
-            "zIndex": 7,
+            "zIndex": 8,
             "data": {
               "type": "tm.Boundary",
               "name": "Granica Zaufania 2",
-              "description": "Oddzielenie warstwy aplikacji webowej od dedykowanego serwera bazy danych SQL",
+              "description": "Oddzielenie warstwy aplikacji od bazy danych SQL",
               "isTrustBoundary": true
             }
           }
