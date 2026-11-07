@@ -165,4 +165,218 @@
             "shape": "store",
             "ports": {
               "groups": {
-                "top": { "position": "top", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF
+                "top": { "position": "top", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } },
+                "right": { "position": "right", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } },
+                "bottom": { "position": "bottom", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } },
+                "left": { "position": "left", "attrs": { "circle": { "r": 4, "magnet": true, "stroke": "#5F95FF", "strokeWidth": 1, "fill": "#fff", "style": { "visibility": "hidden" } } } }
+              },
+              "items": [
+                { "group": "top", "id": "str-p-top" },
+                { "group": "right", "id": "str-p-right" },
+                { "group": "bottom", "id": "str-p-bottom" },
+                { "group": "left", "id": "str-p-left" }
+              ]
+            },
+            "id": "2a383961-2b57-4882-a08c-d599eb7ee84b",
+            "zIndex": 2,
+            "data": {
+              "type": "tm.Store",
+              "name": "Baza Danych SQL (192.168.0.40)",
+              "description": "Relacyjna baza danych przechowująca kartoteki pacjentów, EDM i logi",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isALog": false,
+              "isEncrypted": false,
+              "isSigned": false,
+              "storesCredentials": false,
+              "storesInventory": false,
+              "threats": [
+                {
+                  "id": "threat-i-1",
+                  "title": "Ujawnienie danych medycznych (Information Disclosure)",
+                  "type": "Information disclosure",
+                  "status": "Open",
+                  "severity": "Critical",
+                  "description": "Wyciek numerów PESEL i historii chorób pacjentów w wyniku podatności SQL Injection w wyszukiwarkach aplikacji.",
+                  "mitigation": "Stosowanie wyłącznie zapytań sparametryzowanych (Prepared Statements) oraz zasada najmniejszych uprawnień konta DB."
+                },
+                {
+                  "id": "threat-r-1",
+                  "title": "Wyparcie się modyfikacji wpisów (Repudiation)",
+                  "type": "Repudiation",
+                  "status": "Open",
+                  "severity": "Medium",
+                  "description": "Usunięcie lub zafałszowanie historii leczenia bez możliwości przypisania akcji do tożsamości użytkownika.",
+                  "mitigation": "Scentralizowany, niemodyfikowalny rejestr audytowy (append-only audit log) logujący ID, datę, IP i typ operacji."
+                }
+              ]
+            }
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "HTTPS / JSON",
+              "description": "Interakcja personelu ze stacji roboczej z aplikacją gabinetową",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "protocol": "HTTPS",
+              "threats": [
+                {
+                  "id": "threat-t-1",
+                  "title": "Manipulacja parametrami zlecenia (Tampering)",
+                  "type": "Tampering",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Modyfikacja parametrów zlecenia lub recepty w locie w żądaniu POST.",
+                  "mitigation": "Walidacja integralności i powiązania kontekstowego tokena z żądaniem po stronie serwera."
+                }
+              ],
+              "trustBoundaryIds": []
+            },
+            "labels": [
+              "HTTPS / JSON"
+            ],
+            "id": "b2100ac2-5eac-4f52-80fe-245001618621",
+            "source": {
+              "cell": "1b00a752-4035-41c0-9975-48d897b1851d",
+              "port": "act-p-right"
+            },
+            "target": {
+              "cell": "8163350a-9b88-4d58-9296-3f44089174cf",
+              "port": "prc-p-left"
+            }
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 11,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "SQL (Port 3306)",
+              "description": "Zapis i odczyt kartotek pacjentów oraz bazy EDM",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "SQL",
+              "threats": [],
+              "trustBoundaryIds": []
+            },
+            "labels": [
+              "SQL (Port 3306)"
+            ],
+            "id": "flow-sql-connection",
+            "source": {
+              "cell": "8163350a-9b88-4d58-9296-3f44089174cf",
+              "port": "prc-p-right"
+            },
+            "target": {
+              "cell": "2a383961-2b57-4882-a08c-d599eb7ee84b",
+              "port": "str-p-left"
+            }
+          },
+          {
+            "shape": "trust-boundary-curve",
+            "width": 20,
+            "height": 260,
+            "zIndex": -1,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Boundary",
+              "name": "Granica Zaufania 1",
+              "description": "Oddzielenie stacji personelu od serwera aplikacji",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            },
+            "labels": [
+              "Granica Zaufania 1"
+            ],
+            "id": "39d0aedf-6530-46ca-8d30-034c5a6aa8cd",
+            "source": {
+              "x": 260,
+              "y": 40
+            },
+            "target": {
+              "x": 260,
+              "y": 300
+            }
+          },
+          {
+            "shape": "trust-boundary-curve",
+            "width": 20,
+            "height": 260,
+            "zIndex": -1,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Boundary",
+              "name": "Granica Zaufania 2",
+              "description": "Oddzielenie warstwy aplikacji od bazy danych SQL",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [],
+              "containedElements": []
+            },
+            "labels": [
+              "Granica Zaufania 2"
+            ],
+            "id": "boundary-curve-db",
+            "source": {
+              "x": 540,
+              "y": 40
+            },
+            "target": {
+              "x": 540,
+              "y": 300
+            }
+          }
+        ]
+      }
+    ],
+    "diagramTop": 2,
+    "reviewer": "",
+    "threatTop": 6
+  }
+}
